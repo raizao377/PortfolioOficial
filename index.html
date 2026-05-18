@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rai Matias Maia — Desenvolvedor Fullstack</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0e0e;
+    --bg2: #161616;
+    --bg3: #1e1e1e;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0ede8;
+    --text2: #9a9591;
+    --text3: #5a5754;
+    --accent: #c9a96e;
+    --accent2: #8b6e42;
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── Layout ── */
+  .wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+    background: rgba(14,14,14,0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  nav .inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+  }
+
+  .nav-logo span { color: var(--accent); font-style: italic; }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--text2);
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── Hero ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 7rem 0 5rem;
+    position: relative;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 4rem;
+    align-items: center;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(52px, 7vw, 76px);
+    font-weight: 500;
+    line-height: 1.0;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--text2);
+  }
+
+  .hero-bio {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.75;
+    max-width: 440px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 11px 22px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0e0e0e;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover { background: #d4b07d; border-color: #d4b07d; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text2);
+    border-color: var(--border2);
+  }
+
+  .btn-outline:hover { color: var(--text); border-color: rgba(255,255,255,0.25); }
+
+  /* Avatar card */
+  .avatar-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .avatar-circle {
+    width: 100px; height: 100px;
+    border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem;
+    font-family: var(--serif);
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  .avatar-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .avatar-role {
+    font-size: 12px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.25rem;
+  }
+
+  .status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--text2);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 5px 12px;
+  }
+
+  .status-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #5fad56;
+    box-shadow: 0 0 6px #5fad5680;
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .avatar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.25rem 0;
+  }
+
+  .avatar-stat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    padding: 4px 0;
+    color: var(--text2);
+  }
+
+  .avatar-stat span:last-child { color: var(--text); font-weight: 500; }
+
+  /* ── Sections ── */
+  section { padding: 5rem 0; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-num {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--accent);
+    font-style: italic;
+    min-width: 28px;
+  }
+
+  h2 {
+    font-family: var(--serif);
+    font-size: 36px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── Skills ── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    transition: border-color 0.25s, transform 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skill-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .skill-card:hover::before { opacity: 1; }
+
+  .skill-icon {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .skill-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 3px;
+    color: var(--text);
+  }
+
+  .skill-sub {
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .level-track {
+    height: 2px;
+    background: var(--bg3);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .level-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    width: 0;
+    transition: width 1.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── Projects ── */
+  .projects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .project-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    transition: border-color 0.25s, transform 0.2s;
+    cursor: default;
+  }
+
+  .project-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .project-num {
+    font-family: var(--serif);
+    font-size: 11px;
+    color: var(--accent);
+    font-style: italic;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .project-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .project-desc {
+    font-size: 13px;
+    color: var(--text2);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 100px;
+    border: 1px solid var(--border2);
+    color: var(--text3);
+    letter-spacing: 0.03em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .project-card:hover .tag {
+    border-color: rgba(201,169,110,0.2);
+    color: var(--text2);
+  }
+
+  .project-arrow {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text3);
+    font-size: 16px;
+    flex-shrink: 0;
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .project-card:hover .project-arrow {
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: rotate(-45deg);
+  }
+
+  /* ── About ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    font-size: 15px;
+    color: var(--text2);
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .edu-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .edu-label {
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text3);
+    margin-bottom: 1rem;
+  }
+
+  .edu-item {
+    display: flex;
+    gap: 12px;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .edu-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .edu-item:first-of-type { padding-top: 0; }
+
+  .edu-icon {
+    width: 34px; height: 34px;
+    background: var(--bg3);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  .edu-title { font-size: 13px; font-weight: 500; margin-bottom: 2px; }
+  .edu-sub { font-size: 12px; color: var(--text3); }
+  .edu-year { font-size: 11px; color: var(--text3); margin-left: auto; padding-top: 2px; white-space: nowrap; }
+
+  /* ── Contact ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 2rem;
+  }
+
+  .contact-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.25s, transform 0.2s;
+  }
+
+  .contact-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+  }
+
+  .contact-icon {
+    width: 40px; height: 40px;
+    background: var(--bg3);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  .contact-lbl { font-size: 11px; color: var(--text3); margin-bottom: 2px; }
+  .contact-val { font-size: 13px; font-weight: 500; color: var(--text); }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text3);
+  }
+
+  footer span:first-child { font-family: var(--serif); font-size: 14px; color: var(--text2); }
+
+  /* ── Reveal animation ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ── Decorative line ── */
+  .deco-line {
+    position: absolute;
+    right: -100px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    pointer-events: none;
+  }
+
+  .deco-line::before {
+    content: '';
+    position: absolute;
+    inset: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 720px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .avatar-card { display: none; }
+    .skills-grid { grid-template-columns: repeat(2, 1fr); }
+    .about-grid { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr; }
+    nav .nav-links { display: none; }
+    h1 { font-size: 52px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="inner">
+    <a class="nav-logo" href="#">Rai <span>Matias</span></a>
+    <ul class="nav-links">
+      <li><a href="#habilidades">Habilidades</a></li>
+      <li><a href="#projetos">Projetos</a></li>
+      <li><a href="#sobre">Sobre</a></li>
+      <li><a href="#contato">Contato</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="wrapper">
+  <section class="hero" id="inicio">
+    <div class="hero-grid">
+      <div>
+        <p class="hero-eyebrow reveal">Desenvolvedor Fullstack</p>
+        <h1 class="reveal" style="transition-delay:0.1s">Rai Matias<br><em>Maia</em></h1>
+        <p class="hero-bio reveal" style="transition-delay:0.2s">
+          Estudante de Engenharia de Software com foco em soluções fullstack — aplicativos móveis com Flutter e Dart, APIs robustas com PHP e Laravel, e muito mais. Baseado em Teresina, PI.
+        </p>
+        <div class="hero-ctas reveal" style="transition-delay:0.3s">
+          <a class="btn btn-primary" href="#projetos">Ver projetos</a>
+          <a class="btn btn-outline" href="mailto:raimatias870@gmail.com">Entrar em contato</a>
+        </div>
+      </div>
+
+      <div class="avatar-card reveal" style="transition-delay:0.2s">
+        <div class="avatar-circle">RM</div>
+        <p class="avatar-name">Rai Matias Maia</p>
+        <p class="avatar-role">Fullstack Developer</p>
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          Disponível para projetos
+        </div>
+        <div class="avatar-divider"></div>
+        <div class="avatar-stat"><span>Foco principal</span><span>Flutter + Laravel</span></div>
+        <div class="avatar-stat"><span>Localização</span><span>Teresina, PI</span></div>
+        <div class="avatar-stat"><span>Formação</span><span>Eng. Software</span></div>
+      </div>
+    </div>
+
+    <div class="deco-line"></div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="habilidades">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2>Habilidades</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card reveal" style="transition-delay:0.05s">
+        <div class="skill-icon">📱</div>
+        <div class="skill-name">Flutter / Dart</div>
+        <div class="skill-sub">Mobile & UI cross-platform</div>
+        <div class="level-track"><div class="level-fill" data-width="90"></div></div>
+      </div>
+      <div class="skill-card reveal" style="transition-delay:0.1s">
+        <div class="skill-icon">🐘</div>
+        <div class="skill-name">PHP / Laravel</div>
+        <div class="skill-sub">Backend & APIs REST</div>
+        <div class="level-track"><div class="level-fill" data-width="88"></div></div>
+      </div>
+      <div class="skill-card reveal" style="transition-delay:0.15s">
+        <div class="skill-icon">🐍</div>
+        <div class="skill-name">Python</div>
+        <div class="skill-sub">Scripts & automação</div>
+        <div class="level-track"><div class="level-fill" data-width="74"></div></div>
+      </div>
+      <div class="skill-card reveal" style="transition-delay:0.2s">
+        <div class="skill-icon">⚙️</div>
+        <div class="skill-name">Linguagem C</div>
+        <div class="skill-sub">Programação de baixo nível</div>
+        <div class="level-track"><div class="level-fill" data-width="66"></div></div>
+      </div>
+      <div class="skill-card reveal" style="transition-delay:0.25s">
+        <div class="skill-icon">🗄️</div>
+        <div class="skill-name">MySQL / SQL</div>
+        <div class="skill-sub">Modelagem & consultas</div>
+        <div class="level-track"><div class="level-fill" data-width="80"></div></div>
+      </div>
+      <div class="skill-card reveal" style="transition-delay:0.3s">
+        <div class="skill-icon">🔀</div>
+        <div class="skill-name">Git & GitHub</div>
+        <div class="skill-sub">Controle de versão</div>
+        <div class="level-track"><div class="level-fill" data-width="82"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projetos">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2>Projetos</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="projects-list">
+      <div class="project-card reveal">
+        <div>
+          <span class="project-num">Projeto 01</span>
+          <div class="project-title">App mobile fullstack</div>
+          <p class="project-desc">Aplicativo completo desenvolvido com Flutter no front-end e Laravel como API REST no back-end. Conta com autenticação JWT, CRUD de dados, integração com banco MySQL e design responsivo.</p>
+          <div class="tags">
+            <span class="tag">Flutter</span>
+            <span class="tag">Dart</span>
+            <span class="tag">Laravel</span>
+            <span class="tag">REST API</span>
+            <span class="tag">MySQL</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.1s">
+        <div>
+          <span class="project-num">Projeto 02</span>
+          <div class="project-title">Sistema web com Laravel</div>
+          <p class="project-desc">Painel administrativo web com autenticação de usuários, gerenciamento de permissões, relatórios e dashboard interativo — tudo construído com PHP, Laravel e Blade.</p>
+          <div class="tags">
+            <span class="tag">PHP</span>
+            <span class="tag">Laravel</span>
+            <span class="tag">Blade</span>
+            <span class="tag">MySQL</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+
+      <div class="project-card reveal" style="transition-delay:0.2s">
+        <div>
+          <span class="project-num">Projeto 03</span>
+          <div class="project-title">Automação com Python</div>
+          <p class="project-desc">Scripts de automação para processamento de dados, geração de relatórios e tarefas repetitivas. Utiliza bibliotecas modernas do ecossistema Python.</p>
+          <div class="tags">
+            <span class="tag">Python</span>
+            <span class="tag">Automação</span>
+            <span class="tag">Data processing</span>
+          </div>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="sobre">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2>Sobre</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          Me chamo Rai Matias Maia, sou desenvolvedor fullstack e estudante de Engenharia de Software, baseado em Teresina, Piauí. Tenho paixão por construir produtos digitais que unem performance, elegância e funcionalidade.
+        </p>
+        <p>
+          Meu foco principal é o desenvolvimento fullstack com Flutter + Dart no mobile e PHP/Laravel no back-end. Mas também me aventuro em Python, C e no universo de sistemas mais próximos ao hardware.
+        </p>
+        <p>
+          Estou sempre buscando novos desafios, aprendendo novas tecnologias e colaborando em projetos que façam diferença.
+        </p>
+      </div>
+
+      <div class="edu-card reveal" style="transition-delay:0.15s">
+        <p class="edu-label">Formação & stack</p>
+        <div class="edu-item">
+          <div class="edu-icon">🎓</div>
+          <div style="flex:1">
+            <div class="edu-title">Engenharia de Software</div>
+            <div class="edu-sub">Graduação em andamento</div>
+          </div>
+          <div class="edu-year">Em curso</div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-icon">📱</div>
+          <div style="flex:1">
+            <div class="edu-title">Mobile com Flutter</div>
+            <div class="edu-sub">Dart · State management · UI</div>
+          </div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-icon">🔧</div>
+          <div style="flex:1">
+            <div class="edu-title">Backend com Laravel</div>
+            <div class="edu-sub">PHP · APIs · Eloquent ORM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contato">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2>Contato</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="contact-grid">
+      <a class="contact-card reveal" href="mailto:raimatias870@gmail.com">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-lbl">E-mail</div>
+          <div class="contact-val">raimatias870@gmail.com</div>
+        </div>
+      </a>
+      <a class="contact-card reveal" href="https://github.com/raimatias" target="_blank" style="transition-delay:0.05s">
+        <div class="contact-icon">🐙</div>
+        <div>
+          <div class="contact-lbl">GitHub</div>
+          <div class="contact-val">github.com/raimatias</div>
+        </div>
+      </a>
+      <a class="contact-card reveal" href="https://linkedin.com/in/raimatias" target="_blank" style="transition-delay:0.1s">
+        <div class="contact-icon">💼</div>
+        <div>
+          <div class="contact-lbl">LinkedIn</div>
+          <div class="contact-val">linkedin.com/in/raimatias</div>
+        </div>
+      </a>
+      <div class="contact-card reveal" style="transition-delay:0.15s; cursor:default;">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-lbl">Localização</div>
+          <div class="contact-val">Teresina, Piauí — BR</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>Rai Matias Maia</span>
+    <span>Desenvolvido com cuidado · 2025</span>
+  </footer>
+</div>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // animate skill bars when visible
+        const fill = e.target.querySelector('.level-fill[data-width]');
+        if (fill) {
+          setTimeout(() => { fill.style.width = fill.dataset.width + '%'; }, 200);
+        }
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // Animate all skill bars already visible on load
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.reveal.visible .level-fill[data-width]').forEach(f => {
+      f.style.width = f.dataset.width + '%';
+    });
+  });
+</script>
+</body>
+</html>
