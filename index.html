@@ -223,6 +223,13 @@
     font-size: 34px;
     font-weight: 500;
     color: var(--accent);
+    overflow: hidden;
+  }
+
+  .avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .avatar-name {
@@ -397,7 +404,9 @@
     gap: 1.5rem;
     align-items: start;
     transition: border-color 0.25s, transform 0.2s;
-    cursor: default;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
   }
 
   .project-card:hover {
@@ -647,7 +656,9 @@
       </div>
 
       <div class="avatar-card reveal" style="transition-delay:0.2s">
-        <div class="avatar-circle">RM</div>
+        <div class="avatar-circle">
+          <img src="assets/image.png" alt="Rai Matias Maia">
+        </div>
         <p class="avatar-name">Rai Matias Maia</p>
         <p class="avatar-role">Fullstack Developer</p>
         <div class="status-pill">
@@ -721,21 +732,21 @@
     </div>
 
     <div class="projects-list">
-      <div class="project-card reveal">
+      <a class="project-card reveal" href="https://edula.com.br" target="_blank">
         <div>
           <span class="project-num">Projeto 01</span>
-          <div class="project-title">App mobile fullstack</div>
-          <p class="project-desc">Aplicativo completo desenvolvido com Flutter no front-end e Laravel como API REST no back-end. Conta com autenticação JWT, CRUD de dados, integração com banco MySQL e design responsivo.</p>
+          <div class="project-title">Edula — Gestão Escolar SaaS</div>
+          <p class="project-desc">Plataforma B2B para gestão escolar com arquitetura de banco único (single database) e isolamento por tenant_id. Desenvolvido para oferecer controle total e escalabilidade.</p>
           <div class="tags">
-            <span class="tag">Flutter</span>
-            <span class="tag">Dart</span>
             <span class="tag">Laravel</span>
-            <span class="tag">REST API</span>
+            <span class="tag">PHP</span>
+            <span class="tag">SaaS</span>
             <span class="tag">MySQL</span>
+            <span class="tag">B2B</span>
           </div>
         </div>
         <div class="project-arrow">↗</div>
-      </div>
+      </a>
 
       <div class="project-card reveal" style="transition-delay:0.1s">
         <div>
@@ -860,7 +871,7 @@
   <!-- FOOTER -->
   <footer>
     <span>Rai Matias Maia</span>
-    <span>Desenvolvido com cuidado · 2025</span>
+    <span>Desenvolvido com cuidado · 2026</span>
   </footer>
 </div>
 
